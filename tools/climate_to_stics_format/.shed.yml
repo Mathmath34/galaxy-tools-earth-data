@@ -28,7 +28,7 @@ long_description: |
 
   Developed as part of the DairyFit project (INRAE).
 homepage_url: https://forge.inrae.fr/dairyfit/lot1/chaine_traitement_indicateur
-remote_repository_url: https://forge.inrae.fr/dairyfit/lot1/chaine_traitement_indicateur
+remote_repository_url: https://github.com/earth-data-community/galaxy-tools/tree/master/tools/climate_to_stics_format
 type: unrestricted
 categories:
     -climate analysis
