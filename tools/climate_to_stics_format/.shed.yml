@@ -8,7 +8,7 @@
 #     since the exact category names can change over time.
 
 name: climate_to_stics
-owner: ecology
+owner: climate
 description: Converts ERA5, SAFRAN/GeoSAS, DRIAS-2020 or custom daily climate data into STICS crop model input files
 long_description: |
   Climate to STICS Format converts daily climate data from ERA5 (Copernicus
