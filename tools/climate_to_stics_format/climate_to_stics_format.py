@@ -41,13 +41,19 @@ __version__ = "1.0.0"
 ERA5_MAPPING: Dict = {
     # Temperatures --------------------------------------------------------
     "tasmax": {
-        "names": ["mx2t", "mx2t24", "maximum_2m_temperature_since_previous_post_processing"],
+        "names": [
+            "mx2t", "mx2t24",
+            "maximum_2m_temperature_since_previous_post_processing",
+        ],
         "unit_in": "K",
         "unit_out": "°C",
         "conversion": "K_to_C",
     },
     "tasmin": {
-        "names": ["mn2t", "mn2t24", "minimum_2m_temperature_since_previous_post_processing"],
+        "names": [
+            "mn2t", "mn2t24",
+            "minimum_2m_temperature_since_previous_post_processing",
+        ],
         "unit_in": "K",
         "unit_out": "°C",
         "conversion": "K_to_C",
@@ -119,13 +125,19 @@ SAFRAN_MAPPING: Dict = {
         "conversion": None,
     },
     "rsds": {
-        "names": ["Rg", "GLO", "rg", "rsds", "RAY_GLOB", "Rayonnement", "radiation_globale"],
+        "names": [
+            "Rg", "GLO", "rg", "rsds", "RAY_GLOB", "Rayonnement",
+            "radiation_globale",
+        ],
         "unit_in": "MJ/m²/day",
         "unit_out": "MJ/m²/day",
         "conversion": None,
     },
     "prtot": {
-        "names": ["RR", "Precip", "precip", "prtot", "PRECIP", "precipitation", "Precipitation"],
+        "names": [
+            "RR", "Precip", "precip", "prtot", "PRECIP",
+            "precipitation", "Precipitation",
+        ],
         "unit_in": "mm/day",
         "unit_out": "mm/day",
         "conversion": None,
@@ -137,7 +149,10 @@ SAFRAN_MAPPING: Dict = {
         "conversion": None,
     },
     "wind": {
-        "names": ["FF", "Wind", "wind", "Vent", "vent", "sfcWind", "vitesse_vent"],
+        "names": [
+            "FF", "Wind", "wind", "Vent", "vent", "sfcWind",
+            "vitesse_vent",
+        ],
         "unit_in": "m/s  (10 m height)",
         "unit_out": "m/s  (2 m height, after correction)",
         "conversion": "wind_height",
@@ -205,27 +220,41 @@ DRIAS_MAPPING: Dict = {
 }
 
 # Météo-France SIM2 (SAFRAN reanalysis, "quotidien" product) --------------
-# Source: Météo-France variable dictionary (cf. safranpack vignette, data.gouv.fr).
-# Radiation SSI_Q is the daily-accumulated visible/global radiation in J/cm²/day
-# (→ MJ/m²/day via ×0.01). Total precipitation is the sum of liquid (PRELIQ_Q)
-# and solid/snow (PRENEI_Q); that sum is pre-computed into a 'prtot' column
-# before mapping (see run()).
+# Source: Météo-France variable dictionary (cf. safranpack vignette,
+# data.gouv.fr). Radiation SSI_Q is the daily-accumulated visible/global
+# radiation in J/cm²/day (→ MJ/m²/day via ×0.01). Total precipitation is
+# the sum of liquid (PRELIQ_Q) and solid/snow (PRENEI_Q); that sum is
+# pre-computed into a 'prtot' column before mapping (see run()).
 SIM2_MAPPING: Dict = {
-    "tasmax": {"names": ["TSUP_H_Q"], "unit_in": "°C", "unit_out": "°C",
-               "conversion": None},
-    "tasmin": {"names": ["TINF_H_Q"], "unit_in": "°C", "unit_out": "°C",
-               "conversion": None},
-    "rsds":   {"names": ["SSI_Q"], "unit_in": "J/cm²/day", "unit_out": "MJ/m²/day",
-               "conversion": "Jcm2_to_MJ"},
-    "prtot":  {"names": ["prtot", "PRELIQ_Q"], "unit_in": "mm/day",
-               "unit_out": "mm/day", "conversion": None},
-    "etp":    {"names": ["ETP_Q"], "unit_in": "mm/day", "unit_out": "mm/day",
-               "conversion": None},
-    "wind":   {"names": ["FF_Q"], "unit_in": "m/s  (10 m height)",
-               "unit_out": "m/s  (2 m height, after correction)",
-               "conversion": "wind_height"},
-    "hr":     {"names": ["HU_Q"], "unit_in": "%", "unit_out": "%",
-               "conversion": None},
+    "tasmax": {
+        "names": ["TSUP_H_Q"], "unit_in": "°C", "unit_out": "°C",
+        "conversion": None,
+    },
+    "tasmin": {
+        "names": ["TINF_H_Q"], "unit_in": "°C", "unit_out": "°C",
+        "conversion": None,
+    },
+    "rsds": {
+        "names": ["SSI_Q"], "unit_in": "J/cm²/day",
+        "unit_out": "MJ/m²/day", "conversion": "Jcm2_to_MJ",
+    },
+    "prtot": {
+        "names": ["prtot", "PRELIQ_Q"], "unit_in": "mm/day",
+        "unit_out": "mm/day", "conversion": None,
+    },
+    "etp": {
+        "names": ["ETP_Q"], "unit_in": "mm/day", "unit_out": "mm/day",
+        "conversion": None,
+    },
+    "wind": {
+        "names": ["FF_Q"], "unit_in": "m/s  (10 m height)",
+        "unit_out": "m/s  (2 m height, after correction)",
+        "conversion": "wind_height",
+    },
+    "hr": {
+        "names": ["HU_Q"], "unit_in": "%", "unit_out": "%",
+        "conversion": None,
+    },
 }
 
 # Open-Meteo daily archive (ERA5 / ERA5-Land via api.open-meteo.com) -------
@@ -235,19 +264,32 @@ SIM2_MAPPING: Dict = {
 # (→ m/s at 2 m via kmh_to_ms_height). Humidity is relative humidity, so vapp
 # is derived from hr + tmean (Tetens) rather than from a dew-point.
 OPENMETEO_MAPPING: Dict = {
-    "tasmax": {"names": ["temperature_2m_max"], "unit_in": "°C", "unit_out": "°C",
-               "conversion": None},
-    "tasmin": {"names": ["temperature_2m_min"], "unit_in": "°C", "unit_out": "°C",
-               "conversion": None},
-    "rsds":   {"names": ["shortwave_radiation_sum"], "unit_in": "MJ/m²/day",
-               "unit_out": "MJ/m²/day", "conversion": None},
-    "prtot":  {"names": ["precipitation_sum"], "unit_in": "mm/day",
-               "unit_out": "mm/day", "conversion": None},
-    "etp":    {"names": ["et0_fao_evapotranspiration"], "unit_in": "mm/day",
-               "unit_out": "mm/day", "conversion": None},
-    "wind":   {"names": ["wind_speed_10m_mean"], "unit_in": "km/h  (10 m height)",
-               "unit_out": "m/s  (2 m height, after correction)",
-               "conversion": "kmh_to_ms_height"},
+    "tasmax": {
+        "names": ["temperature_2m_max"], "unit_in": "°C",
+        "unit_out": "°C", "conversion": None,
+    },
+    "tasmin": {
+        "names": ["temperature_2m_min"], "unit_in": "°C",
+        "unit_out": "°C", "conversion": None,
+    },
+    "rsds": {
+        "names": ["shortwave_radiation_sum"], "unit_in": "MJ/m²/day",
+        "unit_out": "MJ/m²/day", "conversion": None,
+    },
+    "prtot": {
+        "names": ["precipitation_sum"], "unit_in": "mm/day",
+        "unit_out": "mm/day", "conversion": None,
+    },
+    "etp": {
+        "names": ["et0_fao_evapotranspiration"], "unit_in": "mm/day",
+        "unit_out": "mm/day", "conversion": None,
+    },
+    "wind": {
+        "names": ["wind_speed_10m_mean"],
+        "unit_in": "km/h  (10 m height)",
+        "unit_out": "m/s  (2 m height, after correction)",
+        "conversion": "kmh_to_ms_height",
+    },
     "hr":     {"names": ["relative_humidity_2m_mean"], "unit_in": "%",
                "unit_out": "%", "conversion": None},
 }
@@ -405,20 +447,24 @@ def apply_conversion(
     conversion_key: Optional[str],
     wind_factor: float = 0.7,
 ) -> Union[xr.DataArray, pd.Series, np.ndarray]:
-    """Apply a named unit conversion.  Returns data unchanged if key is None."""
+    """Apply a named unit conversion. Returns data unchanged if key None."""
     if conversion_key is None:
         return data
 
     conversions = {
-        "K_to_C":        lambda x: x - 273.15,
-        "J_to_MJ":       lambda x: x / 1_000_000,
-        "m_to_mm":       lambda x: x * 1_000,
-        "m_to_mm_abs":   lambda x: np.abs(x) * 1_000,
-        "Wm2_to_MJ":     lambda x: x * 86_400 / 1_000_000,   # W/m² × s/day ÷ 10⁶
-        "Jcm2_to_MJ":    lambda x: x * 0.01,                 # J/cm²/day → MJ/m²/day
-        "kgm2s_to_mm":   lambda x: x * 86_400,               # kg/m²/s → mm/day
-        "wind_height":   lambda x: x * wind_factor,
-        "kmh_to_ms":     lambda x: x / 3.6,                  # km/h → m/s
+        "K_to_C": lambda x: x - 273.15,
+        "J_to_MJ": lambda x: x / 1_000_000,
+        "m_to_mm": lambda x: x * 1_000,
+        "m_to_mm_abs": lambda x: np.abs(x) * 1_000,
+        # W/m² × s/day ÷ 10⁶
+        "Wm2_to_MJ": lambda x: x * 86_400 / 1_000_000,
+        # J/cm²/day → MJ/m²/day
+        "Jcm2_to_MJ": lambda x: x * 0.01,
+        # kg/m²/s → mm/day
+        "kgm2s_to_mm": lambda x: x * 86_400,
+        "wind_height": lambda x: x * wind_factor,
+        # km/h → m/s
+        "kmh_to_ms": lambda x: x / 3.6,
         # Open-Meteo wind is km/h at 10 m: convert to m/s AND apply the
         # 10 m → 2 m height correction in one step.
         "kmh_to_ms_height": lambda x: (x / 3.6) * wind_factor,
@@ -465,12 +511,18 @@ def read_tabular_robust(path: str) -> pd.DataFrame:
                 if len(sample_lines) >= 5:
                     break
     if not sample_lines:
-        raise ValueError(f"File '{path}' contains no data rows (only comments/blank lines).")
+        raise ValueError(
+            f"File '{path}' contains no data rows "
+            "(only comments/blank lines)."
+        )
 
     sample = "".join(sample_lines)
     candidates = [",", ";", "\t", "|"]
     try:
-        delimiter = _csv.Sniffer().sniff(sample, delimiters="".join(candidates)).delimiter
+        sniffed = _csv.Sniffer().sniff(
+            sample, delimiters="".join(candidates)
+        )
+        delimiter = sniffed.delimiter
     except _csv.Error:
         header = sample_lines[0]
         delimiter = max(candidates, key=header.count)
@@ -549,14 +601,19 @@ def load_drias_zip(zip_path: str, extract_dir: str) -> Dict[str, xr.Dataset]:
 
     datasets: Dict[str, xr.Dataset] = {}
     for varname, pattern in patterns.items():
-        hits = glob.glob(os.path.join(extract_dir, "**", pattern), recursive=True)
+        hits = glob.glob(
+            os.path.join(extract_dir, "**", pattern), recursive=True
+        )
         if not hits:
             hits = glob.glob(os.path.join(extract_dir, pattern))
         if hits:
             datasets[varname] = xr.open_dataset(hits[0])
             logging.info(f"  DRIAS {varname}: {Path(hits[0]).name}")
         else:
-            logging.warning(f"  DRIAS: no file found for '{varname}' (pattern: {pattern})")
+            logging.warning(
+                f"  DRIAS: no file found for '{varname}' "
+                f"(pattern: {pattern})"
+            )
 
     return datasets
 
@@ -662,10 +719,12 @@ def compute_derived_variables(
 
     # Detect whether we are working with xarray or numpy/pandas
     sample = next(iter(vars_dict.values()))
-    dtype = "xarray" if isinstance(sample, (xr.DataArray, xr.Dataset)) else "pandas"
+    is_xr = isinstance(sample, (xr.DataArray, xr.Dataset))
+    dtype = "xarray" if is_xr else "pandas"
 
     # --- tmean -----------------------------------------------------------
-    if "tmean" not in vars_dict and "tasmax" in vars_dict and "tasmin" in vars_dict:
+    have_tmax_tmin = "tasmax" in vars_dict and "tasmin" in vars_dict
+    if "tmean" not in vars_dict and have_tmax_tmin:
         vars_dict["tmean"] = 0.5 * (vars_dict["tasmax"] + vars_dict["tasmin"])
         logging.info("  derived: tmean = (tasmax + tasmin) / 2")
 
@@ -702,9 +761,11 @@ def compute_derived_variables(
         logging.info("  derived: vapp from d2m (August–Roche–Magnus)")
 
     # --- wind from u10 + v10 (ERA5 components) ---------------------------
-    if "wind" not in vars_dict and "u10" in vars_dict and "v10" in vars_dict:
+    have_uv = "u10" in vars_dict and "v10" in vars_dict
+    if "wind" not in vars_dict and have_uv:
         vars_dict["wind"] = (
-            np.sqrt(vars_dict["u10"] ** 2 + vars_dict["v10"] ** 2) * wind_factor
+            np.sqrt(vars_dict["u10"] ** 2 + vars_dict["v10"] ** 2)
+            * wind_factor
         )
         logging.info(f"  derived: wind = √(u10²+v10²) × {wind_factor}")
 
@@ -726,7 +787,8 @@ def assign_cells_from_shapefile(
 
     if "cell" not in cell_gdf.columns:
         raise ValueError(
-            "The shapefile must contain a column named 'cell' with numeric cell IDs."
+            "The shapefile must contain a column named 'cell' with "
+            "numeric cell IDs."
         )
 
     cell_raster = rasterize(
@@ -763,7 +825,8 @@ def xarray_to_flat_df(
     """Flatten a gridded Dataset to a DataFrame, drop NaN rows."""
     df = ds.to_dataframe().reset_index()
     # Drop rows where all climate variables are NaN (ocean / outside domain)
-    key_vars = [v for v in ["tasmin", "tasmax", "prtot", "rsds"] if v in df.columns]
+    key_var_names = ["tasmin", "tasmax", "prtot", "rsds"]
+    key_vars = [v for v in key_var_names if v in df.columns]
     if key_vars:
         df = df.dropna(subset=key_vars[:1])
     for col in drop_cols or []:
@@ -779,7 +842,8 @@ def xarray_to_flat_df(
 def add_temporal_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Add Year / Month / Day of month / Day of year from a time column."""
     time_col = next(
-        (c for c in ["time", "date", "Date", "DATE", "Time"] if c in df.columns),
+        (c for c in ["time", "date", "Date", "DATE", "Time"]
+         if c in df.columns),
         None,
     )
     if time_col is None:
@@ -791,10 +855,10 @@ def add_temporal_columns(df: pd.DataFrame) -> pd.DataFrame:
         )
 
     dt = pd.to_datetime(df[time_col])
-    df["Year"]         = dt.dt.year
-    df["Month"]        = dt.dt.month
+    df["Year"] = dt.dt.year
+    df["Month"] = dt.dt.month
     df["Day of month"] = dt.dt.day
-    df["Day of year"]  = dt.dt.dayofyear
+    df["Day of year"] = dt.dt.dayofyear
     return df
 
 
@@ -834,19 +898,19 @@ def export_stics_files(
 
     df = df[df["Cell ID"] != -1].copy()
 
-    # Keep only columns defined in the STICS schema + any extra the user may have
+    # Keep only columns defined in the STICS schema, plus any extras present
     available = [c for c in STICS_COLUMNS if c in df.columns]
     df = df[available]
 
-    cells      = sorted(df["Cell ID"].unique())
-    n_cells    = len(cells)
+    cells = sorted(df["Cell ID"].unique())
+    n_cells = len(cells)
     files_written = 0
 
     logging.info(f"  exporting {n_cells} cells to {output_dir}")
 
     for idx, cell_id in enumerate(cells):
-        df_c    = df[df["Cell ID"] == cell_id]
-        c_dir   = os.path.join(output_dir, str(int(cell_id)))
+        df_c = df[df["Cell ID"] == cell_id]
+        c_dir = os.path.join(output_dir, str(int(cell_id)))
         os.makedirs(c_dir, exist_ok=True)
 
         years = sorted(df_c["Year"].unique())
@@ -859,8 +923,10 @@ def export_stics_files(
             df_y = df_c[df_c["Year"] == year].copy()
 
             co2_y = co2_df[co2_df["year"] == int(year)]
-            df_y  = df_y.merge(co2_y, left_on="Year", right_on="year", how="left")
-            df_y  = df_y.drop(columns=["year"], errors="ignore")
+            df_y = df_y.merge(
+                co2_y, left_on="Year", right_on="year", how="left"
+            )
+            df_y = df_y.drop(columns=["year"], errors="ignore")
 
             out_path = os.path.join(c_dir, f"{int(cell_id)}.{int(year)}")
             df_y.to_csv(
@@ -885,7 +951,7 @@ def zip_directory(src_dir: str, dst_zip: str) -> None:
     with zipfile.ZipFile(dst_zip, "w", zipfile.ZIP_DEFLATED) as zf:
         for root, _dirs, files in os.walk(src_dir):
             for fname in files:
-                fpath   = os.path.join(root, fname)
+                fpath = os.path.join(root, fname)
                 arcname = os.path.relpath(fpath, os.path.dirname(src_dir))
                 zf.write(fpath, arcname)
     logging.info(f"  archive written: {dst_zip}")
@@ -944,8 +1010,8 @@ def run(args: argparse.Namespace) -> None:
             vars_dict: Dict = {}
 
             for var_key, ds in drias_datasets.items():
-                info    = mapping.get(var_key, {})
-                da      = list(ds.data_vars.values())[0]
+                info = mapping.get(var_key, {})
+                da = list(ds.data_vars.values())[0]
                 converted = apply_conversion(
                     da, info.get("conversion"), args.wind_correction_factor
                 )
@@ -954,13 +1020,15 @@ def run(args: argparse.Namespace) -> None:
             if extra_mapping:
                 # Load extra variables from the first available DRIAS file
                 first_ds = next(iter(drias_datasets.values()))
-                extra    = apply_mapping(
+                extra = apply_mapping(
                     first_ds, {}, args.wind_correction_factor, extra_mapping
                 )
                 vars_dict.update(extra)
 
             logging.info("--- Computing derived variables ---")
-            vars_dict = compute_derived_variables(vars_dict, args.wind_correction_factor)
+            vars_dict = compute_derived_variables(
+                vars_dict, args.wind_correction_factor
+            )
 
             clim_ds = build_xarray_dataset(vars_dict)
             clim_ds.rio.write_crs(args.epsg, inplace=True)
@@ -972,7 +1040,8 @@ def run(args: argparse.Namespace) -> None:
                 )
             else:
                 raise ValueError(
-                    "DRIAS NetCDF data requires a --shapefile_zip to assign cells."
+                    "DRIAS NetCDF data requires a --shapefile_zip to "
+                    "assign cells."
                 )
 
             df = xarray_to_flat_df(
@@ -995,12 +1064,17 @@ def run(args: argparse.Namespace) -> None:
 
             base_mapping = ALL_MAPPINGS.get(args.source_type, {})
 
-            # Auto-detect Météo-France SIM2 (SAFRAN reanalysis) by its signature
-            # columns, and switch to the dedicated mapping with correct units.
-            if args.source_type == "safran" and isinstance(raw_data, pd.DataFrame):
+            # Auto-detect Météo-France SIM2 (SAFRAN reanalysis) by its
+            # signature columns, and switch to the dedicated mapping with
+            # correct units.
+            is_tabular = isinstance(raw_data, pd.DataFrame)
+            if args.source_type == "safran" and is_tabular:
                 sim2_signature = {"TINF_H_Q", "TSUP_H_Q", "SSI_Q"}
                 if sim2_signature & set(raw_data.columns):
-                    logging.info("  detected Météo-France SIM2 columns → SIM2 mapping")
+                    logging.info(
+                        "  detected Météo-France SIM2 columns → "
+                        "SIM2 mapping"
+                    )
                     raw_data = raw_data.copy()
                     # Total precipitation = liquid + solid (snow)
                     if {"PRELIQ_Q", "PRENEI_Q"} <= set(raw_data.columns):
@@ -1013,9 +1087,11 @@ def run(args: argparse.Namespace) -> None:
                         raw_data["prtot"] = raw_data["PRELIQ_Q"]
                     base_mapping = SIM2_MAPPING
 
-            # Auto-detect Open-Meteo daily archive (ERA5 Daily Extractor output).
-            # Its columns use Open-Meteo naming and are already unit-converted.
-            if args.source_type == "era5" and isinstance(raw_data, pd.DataFrame):
+            # Auto-detect Open-Meteo daily archive (ERA5 Daily Extractor
+            # output). Its columns use Open-Meteo naming and are already
+            # unit-converted.
+            is_tabular = isinstance(raw_data, pd.DataFrame)
+            if args.source_type == "era5" and is_tabular:
                 openmeteo_signature = {
                     "temperature_2m_max", "et0_fao_evapotranspiration",
                     "shortwave_radiation_sum",
@@ -1027,13 +1103,15 @@ def run(args: argparse.Namespace) -> None:
                     )
                     base_mapping = OPENMETEO_MAPPING
 
-            vars_dict    = apply_mapping(
-                raw_data, base_mapping, args.wind_correction_factor, extra_mapping
+            vars_dict = apply_mapping(
+                raw_data, base_mapping, args.wind_correction_factor,
+                extra_mapping
             )
 
             if not vars_dict:
+                is_xr_ds = isinstance(raw_data, xr.Dataset)
                 present = (
-                    list(raw_data.data_vars) if isinstance(raw_data, xr.Dataset)
+                    list(raw_data.data_vars) if is_xr_ds
                     else list(raw_data.columns)
                 )
                 expected = sorted({
@@ -1046,12 +1124,15 @@ def run(args: argparse.Namespace) -> None:
                     f"'{args.source_type}'.\n"
                     f"  Columns found in the file : {present}\n"
                     f"  Names expected ({args.source_type}) : {expected}\n"
-                    "  → Check the delimiter / header of your file, or supply a "
-                    "--custom_var_mapping JSON to match your column names."
+                    "  → Check the delimiter / header of your file, or "
+                    "supply a --custom_var_mapping JSON to match your "
+                    "column names."
                 )
 
             logging.info("--- Computing derived variables ---")
-            vars_dict = compute_derived_variables(vars_dict, args.wind_correction_factor)
+            vars_dict = compute_derived_variables(
+                vars_dict, args.wind_correction_factor
+            )
 
             # ---- xarray path (gridded NetCDF) -------------------------
             if data_type == "xarray":
@@ -1070,8 +1151,8 @@ def run(args: argparse.Namespace) -> None:
                         "will be treated as its own cell."
                     )
                     yy, xx = np.mgrid[
-                        0 : clim_ds.sizes["y"],
-                        0 : clim_ds.sizes["x"],
+                        0:clim_ds.sizes["y"],
+                        0:clim_ds.sizes["x"],
                     ]
                     clim_ds["cell_id"] = (
                         ("y", "x"),
@@ -1107,17 +1188,19 @@ def run(args: argparse.Namespace) -> None:
                     try:
                         df["Cell ID"] = df[cell_col].astype(int)
                     except (ValueError, TypeError):
-                        # Non-numeric IDs (e.g. site codes) → stable integer codes
+                        # Non-numeric IDs (e.g. site codes) → stable
+                        # integer codes
                         codes, _ = pd.factorize(df[cell_col])
                         df["Cell ID"] = codes.astype(int)
                         logging.info(
-                            f"  '{cell_col}' is non-integer; mapped to integer "
-                            "codes (0..N-1)"
+                            f"  '{cell_col}' is non-integer; mapped to "
+                            "integer codes (0..N-1)"
                         )
                 elif shapefile_path:
                     raise ValueError(
-                        "Tabular data + shapefile rasterisation is not supported. "
-                        "Convert to NetCDF or provide a cell ID column."
+                        "Tabular data + shapefile rasterisation is not "
+                        "supported. Convert to NetCDF or provide a cell "
+                        "ID column."
                     )
                 else:
                     raise ValueError(
@@ -1159,10 +1242,18 @@ def parse_args() -> argparse.Namespace:
     )
 
     # Input files
-    p.add_argument("--input_file",   help="Single climate data file (ERA5/SAFRAN/custom)")
-    p.add_argument("--input_format", default="auto",
-                   help="File format: netcdf | csv | tsv | json | parquet | auto")
-    p.add_argument("--drias_zip",    help="ZIP of DRIAS NetCDF files (one per variable)")
+    p.add_argument(
+        "--input_file",
+        help="Single climate data file (ERA5/SAFRAN/custom)",
+    )
+    p.add_argument(
+        "--input_format", default="auto",
+        help="File format: netcdf | csv | tsv | json | parquet | auto",
+    )
+    p.add_argument(
+        "--drias_zip",
+        help="ZIP of DRIAS NetCDF files (one per variable)",
+    )
 
     # Spatial
     p.add_argument("--epsg",            default="EPSG:4326")
@@ -1185,7 +1276,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def setup_logging(log_file: Optional[str]) -> None:
-    fmt      = "%(asctime)s [%(levelname)s] %(message)s"
+    fmt = "%(asctime)s [%(levelname)s] %(message)s"
     handlers = [logging.StreamHandler(sys.stdout)]
     if log_file:
         handlers.append(logging.FileHandler(log_file, mode="w"))

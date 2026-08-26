@@ -5,6 +5,13 @@
     </description>
 
     <!-- ===================================================================
+         CREATOR
+    =================================================================== -->
+    <creator>
+        <person givenName="Mathieu" familyName="Guimont" url="https://github.com/TODO_your-github-username"/>
+    </creator>
+
+    <!-- ===================================================================
          REQUIREMENTS
     =================================================================== -->
     <requirements>
@@ -16,6 +23,15 @@
         <requirement type="package" version="0.15.7">rioxarray</requirement>
         <requirement type="package" version="14.0.0">pyarrow</requirement>
     </requirements>
+
+    <!-- ===================================================================
+         REQUIRED FILES
+         Ensures the conversion script ships alongside the tool XML when
+         Galaxy relocates the tool directory for remote execution (Pulsar).
+    =================================================================== -->
+    <required_files>
+        <include path="climate_to_stics.py"/>
+    </required_files>
 
     <version_command>python '$__tool_directory__/climate_to_stics.py' --version</version_command>
 
@@ -477,6 +493,16 @@ For a non-predefined source, provide a JSON object in the advanced text field::
 
 This mapping **overrides** (and extends) the predefined mappings for the selected source.
 
+-----
+
+**Workflow integration**
+==========================
+
+This tool is designed to chain with:
+
+- **ERA5 Daily Extractor** (Galaxy CDS tool) → ``input_file`` (NetCDF, ERA5 source)
+- **GeoSAS SAFRAN Extractor** → ``input_file`` (CSV or NetCDF, SAFRAN source)
+- **STICS Runner** → consumes the produced ZIP archive
 
     ]]></help>
 
