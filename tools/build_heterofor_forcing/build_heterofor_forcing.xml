@@ -356,8 +356,8 @@ the original script, this version:
 - replaces a few non-ASCII placeholder characters in the forcing file
   header with plain-ASCII unit labels (e.g. "degC" instead of a stray "?"),
   for portability;
-- is organised into small, documented functions and passes R's `lintr`
-  package (default linters: https://lintr.r-lib.org) with zero warnings.
+- is organised into small, documented functions and formatted with the R
+  `styler` package (tidyverse style, 4-space indentation).
 
 The underlying meteorological calculations (unit conversions, the
 ECMWF-based specific-to-relative-humidity conversion, and the
@@ -365,6 +365,11 @@ RENECOFOR/SAFRAN gap-filling logic) are unchanged from the original
 script.
 
     ]]></help>
+
+    <citations>
+        <citation type="doi">10.5194/gmd-13-905-2020</citation>
+        <citation type="doi">10.1175/2007JAMC1636.1</citation>
+    </citations>
 
     <creator>
         <person givenName="Mathieu" familyName="Guimont" url="https://github.com/Mathmath34"/>
