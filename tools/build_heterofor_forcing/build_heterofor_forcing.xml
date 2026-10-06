@@ -1,5 +1,5 @@
-<tool id="build_heterofor_forcing" name="Build HETEROFOR Forcing Files" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@" profile="21.09">
-    <description>from SAFRAN reanalysis data regridded onto RENECOFOR plots, optionally completed with observed RENECOFOR data</description>
+<tool id="build_heterofor_forcing" name="Build HETEROFOR Forcing Files" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@" profile="@PROFILE@">
+    <description>from SAFRAN reanalysis data regridded onto RENECOFOR plots</description>
 
     <macros>
         <import>macros.xml</import>
@@ -46,12 +46,10 @@
     ]]></command>
 
     <inputs>
-        <param name="safran_data" type="data" format="netcdf,csv,parquet,json" label="SAFRAN/ORCHIDEE forcing file"
-               help="NetCDF, CSV, Parquet or CoverageJSON (auto-detected). See Help below for required columns." />
+        <param name="safran_data" type="data" format="netcdf,csv,parquet,json" label="SAFRAN/ORCHIDEE forcing file"/>
         <param name="psurf_data" type="data" format="netcdf,csv,parquet,json" label="SAFRAN/ORCHIDEE PSurf file"
-               help="Surface pressure file, same accepted formats as above. See Help below." />
-        <param name="stations" type="data" format="tabular,rds" label="RENECOFOR station metadata"
-               help="Tab-delimited file or RDS data.frame with a 'Station' column. See Help below for row-order requirements with NetCDF." />
+               help="Surface pressure file"/>
+        <param name="stations" type="data" format="tabular,rds" label="RENECOFOR station metadata"/>
 
         <param name="wind_height_safran" type="float" value="10.0" min="0"
                label="Wind speed measurement height for the SAFRAN-only files (m)"
@@ -67,7 +65,7 @@
                 <option value="no" selected="true">No, SAFRAN-only forcing files</option>
                 <option value="yes">Yes, combine with observed RENECOFOR data</option>
             </param>
-            <when value="no" />
+            <when value="no"/>
             <when value="yes">
                 <param name="reneco_rds" type="data" format="rds" label="Observed RENECOFOR meteorological data (RDS)"
                        help="RDS data.frame, one row per station-hour. See Help below for the required column layout." />
