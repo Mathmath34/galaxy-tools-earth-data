@@ -1,10 +1,8 @@
 <tool id="build_heterofor_forcing" name="Build HETEROFOR Forcing Files" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@" profile="@PROFILE@">
     <description>from SAFRAN reanalysis data regridded onto RENECOFOR plots</description>
-
     <macros>
         <import>macros.xml</import>
     </macros>
-
     <requirements>
         <requirement type="package" version="4.3.3">r-base</requirement>
         <requirement type="package" version="1.7.5">r-optparse</requirement>
@@ -17,11 +15,9 @@
         <requirement type="package" version="0.4.1">r-nanoparquet</requirement>
         <requirement type="package" version="1.8.8">r-jsonlite</requirement>
     </requirements>
-
     <required_files>
         <include path="build_heterofor_forcing.R"/>
     </required_files>
-
     <command detect_errors="exit_code"><![CDATA[
         mkdir -p heterofor_safran_only
         #if str($reneco_cond.use_reneco) == "yes"
@@ -44,50 +40,34 @@
             --missing_summary '$missing_summary'
         #end if
     ]]></command>
-
     <inputs>
         <param name="safran_data" type="data" format="netcdf,csv,parquet,json" label="SAFRAN/ORCHIDEE forcing file"/>
-        <param name="psurf_data" type="data" format="netcdf,csv,parquet,json" label="SAFRAN/ORCHIDEE PSurf file"
-               help="Surface pressure file"/>
+        <param name="psurf_data" type="data" format="netcdf,csv,parquet,json" label="SAFRAN/ORCHIDEE PSurf file" help="Surface pressure file"/>
         <param name="stations" type="data" format="tabular,rds" label="RENECOFOR station metadata"/>
-
-        <param name="wind_height_safran" type="float" value="10.0" min="0"
-               label="Wind speed measurement height for the SAFRAN-only files (m)"
-               help="Written as 'windSpeedMeasurementHeight' in the header of the SAFRAN-only forcing files." />
-        <param name="wind_atten_coef" type="float" value="2" min="0"
-               label="Wind speed attenuation coefficient"
-               help="Written as 'windSpeedAttenuationCoefficient' in the header of every forcing file produced." />
-
+        <param name="wind_height_safran" type="float" value="10.0" min="0" label="Wind speed measurement height for the SAFRAN-only files (m)" help="Written as 'windSpeedMeasurementHeight' in the header of the SAFRAN-only forcing files."/>
+        <param name="wind_atten_coef" type="float" value="2" min="0" label="Wind speed attenuation coefficient" help="Written as 'windSpeedAttenuationCoefficient' in the header of every forcing file produced."/>
         <conditional name="reneco_cond">
-            <param name="use_reneco" type="select"
-                   label="Combine SAFRAN with observed RENECOFOR station data?"
-                   help="See Help below for details on the combined mode.">
+            <param name="use_reneco" type="select" label="Combine SAFRAN with observed RENECOFOR station data?" help="See Help below for details on the combined mode.">
                 <option value="no" selected="true">No, SAFRAN-only forcing files</option>
                 <option value="yes">Yes, combine with observed RENECOFOR data</option>
             </param>
             <when value="no"/>
             <when value="yes">
-                <param name="reneco_rds" type="data" format="rds" label="Observed RENECOFOR meteorological data (RDS)"
-                       help="RDS data.frame, one row per station-hour. See Help below for the required column layout." />
-                <param name="safran_end_date" type="text" value="2024-01-01 00:00:00"
-                       label="Drop SAFRAN records at or after this date (UTC)"
-                       help="Format: YYYY-MM-DD HH:MM:SS.">
+                <param name="reneco_rds" type="data" format="rds" label="Observed RENECOFOR meteorological data (RDS)" help="RDS data.frame, one row per station-hour. See Help below for the required column layout."/>
+                <param name="safran_end_date" type="text" value="2024-01-01 00:00:00" label="Drop SAFRAN records at or after this date (UTC)" help="Format: YYYY-MM-DD HH:MM:SS.">
                     <validator type="regex" message="Use the format YYYY-MM-DD HH:MM:SS">^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$</validator>
                 </param>
-                <param name="wind_height_combined" type="float" value="2.0" min="0"
-                       label="Wind speed measurement height for the combined files (m)"
-                       help="Written as 'windSpeedMeasurementHeight' in the combined file header." />
+                <param name="wind_height_combined" type="float" value="2.0" min="0" label="Wind speed measurement height for the combined files (m)" help="Written as 'windSpeedMeasurementHeight' in the combined file header."/>
             </when>
         </conditional>
     </inputs>
-
     <outputs>
         <collection name="heterofor_safran_only" type="list" label="${tool.name} on ${on_string}: SAFRAN-only forcing files">
-            <discover_datasets pattern="__name_and_ext__" directory="heterofor_safran_only" />
+            <discover_datasets pattern="__name_and_ext__" directory="heterofor_safran_only"/>
         </collection>
         <collection name="heterofor_combined" type="list" label="${tool.name} on ${on_string}: RENECOFOR + SAFRAN forcing files">
             <filter>reneco_cond['use_reneco'] == "yes"</filter>
-            <discover_datasets pattern="__name_and_ext__" directory="heterofor_combined" />
+            <discover_datasets pattern="__name_and_ext__" directory="heterofor_combined"/>
         </collection>
         <data name="filling_summary" format="tabular" label="${tool.name} on ${on_string}: SAFRAN-filling summary">
             <filter>reneco_cond['use_reneco'] == "yes"</filter>
@@ -96,95 +76,89 @@
             <filter>reneco_cond['use_reneco'] == "yes"</filter>
         </data>
     </outputs>
-
     <tests>
         <!-- Test 1: SAFRAN-only forcing files (no RENECOFOR observations given) -->
         <test expect_num_outputs="1">
-            <param name="safran_data" value="safran_test.nc" ftype="netcdf" />
-            <param name="psurf_data" value="psurf_test.nc" ftype="netcdf" />
-            <param name="stations" value="stations_test.txt" ftype="tabular" />
+            <param name="safran_data" value="safran_test.nc" ftype="netcdf"/>
+            <param name="psurf_data" value="psurf_test.nc" ftype="netcdf"/>
+            <param name="stations" value="stations_test.txt" ftype="tabular"/>
             <conditional name="reneco_cond">
-                <param name="use_reneco" value="no" />
+                <param name="use_reneco" value="no"/>
             </conditional>
             <output_collection name="heterofor_safran_only" type="list" count="3">
-                <element name="CHP_40_HETEROFOR_meteo" file="expected/CHP_40_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
-                <element name="CHP_59_HETEROFOR_meteo" file="expected/CHP_59_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
-                <element name="CHS_10_HETEROFOR_meteo" file="expected/CHS_10_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
+                <element name="CHP_40_HETEROFOR_meteo" file="expected/CHP_40_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
+                <element name="CHP_59_HETEROFOR_meteo" file="expected/CHP_59_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
+                <element name="CHS_10_HETEROFOR_meteo" file="expected/CHS_10_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
             </output_collection>
         </test>
-
         <!-- Test 2: combined with observed RENECOFOR data (only CHP 59 has RENECOFOR data
              in this small test window, so only CHP 59 appears in the combined collection) -->
         <test expect_num_outputs="4">
-            <param name="safran_data" value="safran_test.nc" ftype="netcdf" />
-            <param name="psurf_data" value="psurf_test.nc" ftype="netcdf" />
-            <param name="stations" value="stations_test.txt" ftype="tabular" />
+            <param name="safran_data" value="safran_test.nc" ftype="netcdf"/>
+            <param name="psurf_data" value="psurf_test.nc" ftype="netcdf"/>
+            <param name="stations" value="stations_test.txt" ftype="tabular"/>
             <conditional name="reneco_cond">
-                <param name="use_reneco" value="yes" />
-                <param name="reneco_rds" value="reneco_test.rds" ftype="rds" />
-                <param name="safran_end_date" value="2024-01-01 00:00:00" />
-                <param name="wind_height_combined" value="2.0" />
+                <param name="use_reneco" value="yes"/>
+                <param name="reneco_rds" value="reneco_test.rds" ftype="rds"/>
+                <param name="safran_end_date" value="2024-01-01 00:00:00"/>
+                <param name="wind_height_combined" value="2.0"/>
             </conditional>
-            <output_collection name="heterofor_safran_only" type="list" count="3" />
+            <output_collection name="heterofor_safran_only" type="list" count="3"/>
             <output_collection name="heterofor_combined" type="list" count="1">
-                <element name="CHP_59_HETEROFOR_meteo_RENECOFOR" file="expected/CHP_59_HETEROFOR_meteo_RENECOFOR.txt" compare="diff" lines_diff="2" />
+                <element name="CHP_59_HETEROFOR_meteo_RENECOFOR" file="expected/CHP_59_HETEROFOR_meteo_RENECOFOR.txt" compare="diff" lines_diff="2"/>
             </output_collection>
-            <output name="filling_summary" file="expected/filling_summary.tsv" ftype="tabular" />
-            <output name="missing_summary" file="expected/missing_summary.tsv" ftype="tabular" />
+            <output name="filling_summary" file="expected/filling_summary.tsv" ftype="tabular"/>
+            <output name="missing_summary" file="expected/missing_summary.tsv" ftype="tabular"/>
         </test>
-
         <!-- Test 3: same as test 1, but station metadata given as RDS instead of
              tabular text, to check both accepted input formats give the same result -->
         <test expect_num_outputs="1">
-            <param name="safran_data" value="safran_test.nc" ftype="netcdf" />
-            <param name="psurf_data" value="psurf_test.nc" ftype="netcdf" />
-            <param name="stations" value="stations_test.rds" ftype="rds" />
+            <param name="safran_data" value="safran_test.nc" ftype="netcdf"/>
+            <param name="psurf_data" value="psurf_test.nc" ftype="netcdf"/>
+            <param name="stations" value="stations_test.rds" ftype="rds"/>
             <conditional name="reneco_cond">
-                <param name="use_reneco" value="no" />
+                <param name="use_reneco" value="no"/>
             </conditional>
             <output_collection name="heterofor_safran_only" type="list" count="3">
-                <element name="CHP_40_HETEROFOR_meteo" file="expected/CHP_40_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
-                <element name="CHP_59_HETEROFOR_meteo" file="expected/CHP_59_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
-                <element name="CHS_10_HETEROFOR_meteo" file="expected/CHS_10_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
+                <element name="CHP_40_HETEROFOR_meteo" file="expected/CHP_40_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
+                <element name="CHP_59_HETEROFOR_meteo" file="expected/CHP_59_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
+                <element name="CHS_10_HETEROFOR_meteo" file="expected/CHS_10_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
             </output_collection>
         </test>
-
         <!-- Test 4: same as test 1, but the SAFRAN and PSurf files are given as
              CSV and Parquet (one of each) instead of NetCDF, to check both
              tabular formats and format auto-detection give the same result -->
         <test expect_num_outputs="1">
-            <param name="safran_data" value="safran_test.csv" ftype="csv" />
-            <param name="psurf_data" value="psurf_test.parquet" ftype="parquet" />
-            <param name="stations" value="stations_test.txt" ftype="tabular" />
+            <param name="safran_data" value="safran_test.csv" ftype="csv"/>
+            <param name="psurf_data" value="psurf_test.parquet" ftype="parquet"/>
+            <param name="stations" value="stations_test.txt" ftype="tabular"/>
             <conditional name="reneco_cond">
-                <param name="use_reneco" value="no" />
+                <param name="use_reneco" value="no"/>
             </conditional>
             <output_collection name="heterofor_safran_only" type="list" count="3">
-                <element name="CHP_40_HETEROFOR_meteo" file="expected/CHP_40_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
-                <element name="CHP_59_HETEROFOR_meteo" file="expected/CHP_59_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
-                <element name="CHS_10_HETEROFOR_meteo" file="expected/CHS_10_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
+                <element name="CHP_40_HETEROFOR_meteo" file="expected/CHP_40_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
+                <element name="CHP_59_HETEROFOR_meteo" file="expected/CHP_59_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
+                <element name="CHS_10_HETEROFOR_meteo" file="expected/CHS_10_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
             </output_collection>
         </test>
-
         <!-- Test 5: same as test 1, but the SAFRAN file is given as CoverageJSON
              (a CoverageCollection with one Coverage per station) and the PSurf
              file as NetCDF, to check CoverageJSON support and independent
              per-file format auto-detection give the same result -->
         <test expect_num_outputs="1">
-            <param name="safran_data" value="safran_test.json" ftype="json" />
-            <param name="psurf_data" value="psurf_test.nc" ftype="netcdf" />
-            <param name="stations" value="stations_test.txt" ftype="tabular" />
+            <param name="safran_data" value="safran_test.json" ftype="json"/>
+            <param name="psurf_data" value="psurf_test.nc" ftype="netcdf"/>
+            <param name="stations" value="stations_test.txt" ftype="tabular"/>
             <conditional name="reneco_cond">
-                <param name="use_reneco" value="no" />
+                <param name="use_reneco" value="no"/>
             </conditional>
             <output_collection name="heterofor_safran_only" type="list" count="3">
-                <element name="CHP_40_HETEROFOR_meteo" file="expected/CHP_40_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
-                <element name="CHP_59_HETEROFOR_meteo" file="expected/CHP_59_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
-                <element name="CHS_10_HETEROFOR_meteo" file="expected/CHS_10_HETEROFOR_meteo.txt" compare="diff" lines_diff="2" />
+                <element name="CHP_40_HETEROFOR_meteo" file="expected/CHP_40_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
+                <element name="CHP_59_HETEROFOR_meteo" file="expected/CHP_59_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
+                <element name="CHS_10_HETEROFOR_meteo" file="expected/CHS_10_HETEROFOR_meteo.txt" compare="diff" lines_diff="2"/>
             </output_collection>
         </test>
     </tests>
-
     <help><![CDATA[
 
 What this tool does
@@ -363,16 +337,13 @@ RENECOFOR/SAFRAN gap-filling logic) are unchanged from the original
 script.
 
     ]]></help>
-
     <citations>
         <citation type="doi">10.5194/gmd-13-905-2020</citation>
         <citation type="doi">10.1175/2007JAMC1636.1</citation>
     </citations>
-
     <creator>
         <person givenName="Mathieu" familyName="Guimont" url="https://github.com/Mathmath34"/>
         <organization name="ALAMOD" url="https://www.pepr-faircarbon.fr/projets/alamod/"/>
         <organization name="Data Terra" url="https://www.data-terra.org/"/>
     </creator>
-
 </tool>

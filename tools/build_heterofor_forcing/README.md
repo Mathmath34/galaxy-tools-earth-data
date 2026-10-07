@@ -1,3 +1,10 @@
+---
+title: "Build HETEROFOR Forcing Files"
+date: 2026-10-07
+draft: false
+weight: 1
+---
+
 # Build HETEROFOR Forcing Files
 
 Builds hourly meteorological forcing files for the **HETEROFOR** forest growth model at the 26 plots of the **RENECOFOR** network, from **SAFRAN** reanalysis data (via the ORCHIDEE land surface model output format) already regridded onto the RENECOFOR plot locations.
