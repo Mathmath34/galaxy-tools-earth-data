@@ -1,4 +1,11 @@
-Merge SAFRAN and ERA5 climate data
+---
+title: "Merge SAFRAN and ERA5 climate data"
+date: 2026-10-21
+draft: false
+weight: 1
+---
+
+# Merge SAFRAN and ERA5 climate data
 ===================================
 
 A Galaxy tool that joins a SAFRAN climate reanalysis file (metropolitan
