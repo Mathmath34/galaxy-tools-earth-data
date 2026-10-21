@@ -5,7 +5,7 @@ draft: false
 weight: 1
 ---
 
-# Merge SAFRAN and ERA5 climate data
+Merge SAFRAN and ERA5 climate data
 ===================================
 
 A Galaxy tool that joins a SAFRAN climate reanalysis file (metropolitan
